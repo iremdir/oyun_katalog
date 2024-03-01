@@ -1,0 +1,19 @@
+Page 1:
+
+En üstte AppBar()
+TextField, başında büyüteç ikonu hint text olarak'Search for the games'
+SearchBar tıklandığında input beklenir yazılana kadar boş sayda gözükecek
+ListView içinde oyunları barındıran card widgetları
+Card da parametre olarak resim,üstte oyun ismi,altta ise metacritic scoru ve oyun türleri
+Bu parametreler api ile çekilecek
+En altta da NavigationBar var
+Barda ise games ve favourite ikonlarıyla beraber varlar
+Alttaki favori sayfasına girince favorilediğimiz oyunlar çıkacak ve onlar yine ListView içerisinde cardlar halinde olacak (İlk sayfadaki gibi)
+Eğer favorilere eklenen bir oyun yoksa favori yok yazılır
+
+
+ÖĞRENİLCEK:
+TextFielda search nasıl yapılacak.
+(önemli) API kullanılımı öğrenilcek.Bu şekilde metacritic scoru, oyun isim - türleri çekilcek.
+StateManagment kullanarak favori ekleme sayfası güncel kalacak.
+
