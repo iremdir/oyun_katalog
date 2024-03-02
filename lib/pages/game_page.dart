@@ -15,6 +15,8 @@ class GamePageView extends StatefulWidget {
 class _GamePageViewState extends State<GamePageView> {
   
   List<Game> games = [];
+  List<Game> displayGames = [];
+  
   
   
   @override
@@ -42,10 +44,10 @@ class _GamePageViewState extends State<GamePageView> {
         
         
         
-        const Padding(padding: EdgeInsets.all(8),
+         Padding(padding: const EdgeInsets.all(8),
         child: TextField(
-          
-          decoration: InputDecoration(
+          onChanged:(value) => updateList(value),
+          decoration: const InputDecoration(
             filled: false,
             fillColor: Color.fromARGB(255, 98, 92, 92),
             
@@ -55,10 +57,12 @@ class _GamePageViewState extends State<GamePageView> {
         
         
         Expanded(
-          child: ListView.builder(
-            itemCount: games.length,     
+          
+          child: displayGames.isEmpty ? const Text('No results found') :
+          ListView.builder(
+            itemCount: displayGames.length,     
             itemBuilder: (context, index) {  
-              final game = games[index];
+              final game = displayGames[index];
               final gameName = game.name;  
               final metacriticPoint = game.metacriticScore;
               final backgroundImage = game.backgroundImage;
@@ -72,7 +76,8 @@ class _GamePageViewState extends State<GamePageView> {
                     Align(alignment:Alignment.centerLeft, child: Text(metacriticPoint.toString())),
                     Align(alignment: Alignment.centerLeft,child: Text(gameGenre),)
                   ],
-                )
+                ),
+                leading: Image.network(backgroundImage),
                 
               );
           },),
@@ -92,7 +97,15 @@ class _GamePageViewState extends State<GamePageView> {
     setState(() {
       
       games = response;
+      displayGames = List.from(games);
    });
+  }
+  
+  void updateList(String value){
+    setState(() {
+      displayGames = games.where((element) => element.name.toLowerCase().contains(value.toLowerCase()),).toList();
+    });
+    
   }
 
 }
