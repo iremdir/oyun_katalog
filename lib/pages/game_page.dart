@@ -73,7 +73,7 @@ class _GamePageViewState extends State<GamePageView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(height: 32,),
-                    Align(alignment:Alignment.centerLeft, child: Text(metacriticPoint.toString())),
+                    Align(alignment:Alignment.centerLeft, child: Text('metacritic: ${metacriticPoint.toString()}')),
                     Align(alignment: Alignment.centerLeft,child: Text(gameGenre),)
                   ],
                 ),
@@ -103,7 +103,14 @@ class _GamePageViewState extends State<GamePageView> {
   
   void updateList(String value){
     setState(() {
-      displayGames = games.where((element) => element.name.toLowerCase().contains(value.toLowerCase()),).toList();
+      
+      displayGames = games.where((element) {
+        final String name = element.name.toString().toLowerCase() ?? ' '; 
+        final String genre = element.gameGenre.toString().toLowerCase() ?? ' ';
+        
+        return name.contains(value.toLowerCase()) || genre.contains(value.toLowerCase());
+      }).toList();
+      
     });
     
   }
