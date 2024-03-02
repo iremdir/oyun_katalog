@@ -1,8 +1,9 @@
-import 'dart:convert';
-
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
+import 'package:oyun_katalog/models/game_names.dart';
+import 'package:oyun_katalog/services/games_api.dart';
 
 class GamePageView extends StatefulWidget {
   const GamePageView({super.key});
@@ -13,7 +14,7 @@ class GamePageView extends StatefulWidget {
 
 class _GamePageViewState extends State<GamePageView> {
   
-  List<dynamic> games = [];
+  List<Game> games = [];
   
   
   @override
@@ -57,11 +58,11 @@ class _GamePageViewState extends State<GamePageView> {
           child: ListView.builder(
             itemCount: games.length,     
             itemBuilder: (context, index) {  
-              final user = games[index];
-              final gameName = user['name'];  
-              final metacriticPoint = user['metacritic'];
-              final backgroundImage = user['background_image'];
-              final gameGenre = user['genres'][0]['name'];
+              final game = games[index];
+              final gameName = game.name;  
+              final metacriticPoint = game.metacriticScore;
+              final backgroundImage = game.backgroundImage;
+              final gameGenre = game.gameGenre;
               return  ListTile(
                 title: Text(gameName),
                 subtitle: Column(
@@ -86,20 +87,14 @@ class _GamePageViewState extends State<GamePageView> {
   }
   
   
-  
-  void fetchGames() async{
-    const url = 'https://api.rawg.io/api/games?key=3be8af6ebf124ffe81d90f514e59856c&page_size=10&page=1';
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
+  Future<void> fetchGames() async{
+    final response = await GamesApi.fetchGames();
     setState(() {
-      games = json['results'];
-    });
-    
-    
-    
+      
+      games = response;
+   });
   }
+
 }
 
 
