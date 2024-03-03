@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _GamePageViewState extends State<GamePageView> {
   
   List<Game> games = [];
   List<Game> displayGames = [];
-  int currentPage = 0;
+  final int currentPage = 0;
   
   
   
@@ -32,7 +33,7 @@ class _GamePageViewState extends State<GamePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      bottomNavigationBar: const NavigationBarSettings(),
+      bottomNavigationBar: NavigationBarSettings(currentPage: currentPage,),
       body:   Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -189,22 +190,30 @@ class GameCard extends StatelessWidget {
 
 
 class NavigationBarSettings extends StatefulWidget {
-  const NavigationBarSettings({super.key});
+  const NavigationBarSettings({super.key,required this.currentPage});
+  
+  final int currentPage;
 
   @override
   State<NavigationBarSettings> createState() => _NavigationBarSettingsState();
 }
 
 class _NavigationBarSettingsState extends State<NavigationBarSettings> {
+  late int currentPage;
   
-  int currentPage = 0;
+  @override
+  void initState(){
+    super.initState();
+    currentPage = widget.currentPage;
+  }
+
   
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
   items: const [
     BottomNavigationBarItem(
-      icon: Icon(Icons.gamepad),
+      icon: Icon(Icons.gamepad_rounded),
       label: 'Games',
     ),
     BottomNavigationBarItem(
@@ -213,22 +222,20 @@ class _NavigationBarSettingsState extends State<NavigationBarSettings> {
     ),
 
   ],
-  currentIndex: currentPage,
+  currentIndex: widget.currentPage,
   onTap: (int index) {
     setState(() {
       currentPage = index;
     });
     
-    if(currentPage == index){
+    if(true){
       if(index == 1){
         Navigator.push(context, MaterialPageRoute(builder: ((context) => const FavouriteGamesView())));  
       }
-      else if(index == 2){
+      else if(index == 0){
         Navigator.push(context, MaterialPageRoute(builder: ((context) => const GamePageView())));
       }
     }
-      
-    
   },
 );
   }
