@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:oyun_katalog/models/game_names.dart';
+import 'package:oyun_katalog/pages/favourite_page.dart';
 import 'package:oyun_katalog/services/games_api.dart';
 
 class GamePageView extends StatefulWidget {
@@ -16,6 +17,8 @@ class _GamePageViewState extends State<GamePageView> {
   
   List<Game> games = [];
   List<Game> displayGames = [];
+  int currentPage = 0;
+  
   
   
   
@@ -29,7 +32,7 @@ class _GamePageViewState extends State<GamePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      //floatingActionButton: FloatingActionButton(onPressed: fetchgames),
+      bottomNavigationBar: const NavigationBarSettings(),
       body:   Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -81,10 +84,12 @@ class _GamePageViewState extends State<GamePageView> {
                 
               );
           },),
-        )
+        ),
+        
       ],
       
-      )
+      ),
+      
       
       
     );
@@ -95,7 +100,6 @@ class _GamePageViewState extends State<GamePageView> {
   Future<void> fetchGames() async{
     final response = await GamesApi.fetchGames();
     setState(() {
-      
       games = response;
       displayGames = List.from(games);
    });
@@ -105,8 +109,8 @@ class _GamePageViewState extends State<GamePageView> {
     setState(() {
       
       displayGames = games.where((element) {
-        final String name = element.name.toString().toLowerCase() ?? ' '; 
-        final String genre = element.gameGenre.toString().toLowerCase() ?? ' ';
+        final String name = element.name.toString().toLowerCase(); 
+        final String genre = element.gameGenre.toString().toLowerCase();
         
         return name.contains(value.toLowerCase()) || genre.contains(value.toLowerCase());
       }).toList();
@@ -177,5 +181,55 @@ class GameCard extends StatelessWidget {
       )
                 
     );
+  }
+}
+
+
+
+
+
+class NavigationBarSettings extends StatefulWidget {
+  const NavigationBarSettings({super.key});
+
+  @override
+  State<NavigationBarSettings> createState() => _NavigationBarSettingsState();
+}
+
+class _NavigationBarSettingsState extends State<NavigationBarSettings> {
+  
+  int currentPage = 0;
+  
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+  items: const [
+    BottomNavigationBarItem(
+      icon: Icon(Icons.gamepad),
+      label: 'Games',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.favorite),
+      label: 'Favorites',
+    ),
+
+  ],
+  currentIndex: currentPage,
+  onTap: (int index) {
+    setState(() {
+      currentPage = index;
+    });
+    
+    if(currentPage == index){
+      if(index == 1){
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => const FavouriteGamesView())));  
+      }
+      else if(index == 2){
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => const GamePageView())));
+      }
+    }
+      
+    
+  },
+);
   }
 }
