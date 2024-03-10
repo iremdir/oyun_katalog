@@ -18,7 +18,7 @@ class _GamePageViewState extends State<GamePageView> {
   
   List<Game> games = [];
   List<Game> displayGames = [];
-  final int currentPage = 0;
+  final int currentPageIndex = 0;
   
   
   
@@ -32,8 +32,8 @@ class _GamePageViewState extends State<GamePageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      bottomNavigationBar: NavigationBarSettings(currentPage: currentPage,),
+      appBar: AppBar(automaticallyImplyLeading: false,),
+      bottomNavigationBar: BottomNavigationBarSettings(currentPageIndex: _MyIcons.gamesicon.index),
       body:   Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -98,6 +98,7 @@ class _GamePageViewState extends State<GamePageView> {
   }
   
   
+  
   Future<void> fetchGames() async{
     final response = await GamesApi.fetchGames();
     setState(() {
@@ -122,22 +123,9 @@ class _GamePageViewState extends State<GamePageView> {
 
 }
 
+enum _MyIcons {gamesicon, favouritesicon}
 
-class SearchBar extends StatefulWidget {
- 
-  const SearchBar({super.key});
 
-  @override
-  State<SearchBar> createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<SearchBar> {
-  
-  
-  String query = '';
-  
-  
-  
   
   
   @override
@@ -153,7 +141,7 @@ class _SearchBarState extends State<SearchBar> {
             border: OutlineInputBorder(),
             prefixIcon: Icon(Icons.search),)),);
   }
-}
+
 
 class GameCard extends StatelessWidget {
   
@@ -187,56 +175,36 @@ class GameCard extends StatelessWidget {
 
 
 
-
-
-class NavigationBarSettings extends StatefulWidget {
-  const NavigationBarSettings({super.key,required this.currentPage});
-  
-  final int currentPage;
+class BottomNavigationBarSettings extends StatefulWidget {
+  int currentPageIndex;
+  BottomNavigationBarSettings({super.key, required this.currentPageIndex});
 
   @override
-  State<NavigationBarSettings> createState() => _NavigationBarSettingsState();
+  State<BottomNavigationBarSettings> createState() => _BottomNavigationBarSettingsState();
 }
 
-class _NavigationBarSettingsState extends State<NavigationBarSettings> {
-  late int currentPage;
-  
-  @override
-  void initState(){
-    super.initState();
-    currentPage = widget.currentPage;
-  }
-
+class _BottomNavigationBarSettingsState extends State<BottomNavigationBarSettings> {
   
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-  items: const [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.gamepad_rounded),
-      label: 'Games',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.favorite),
-      label: 'Favorites',
-    ),
-
-  ],
-  currentIndex: widget.currentPage,
-  onTap: (int index) {
-    setState(() {
-      currentPage = index;
-    });
-    
-    if(true){
-      if(index == 1){
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => const FavouriteGamesView())));  
-      }
-      else if(index == 0){
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => const GamePageView())));
-      }
-    }
-  },
-);
+        onTap: (value) {
+          if(value == _MyIcons.gamesicon.index){
+            Navigator.push(context, MaterialPageRoute(builder: ((context) => const GamePageView())));
+          }else{
+            Navigator.push(context, MaterialPageRoute(builder: ((context) => const FavouriteGamesView())));
+          }
+          setState(() {
+            widget.currentPageIndex = value;
+          });
+          
+          
+        },
+        currentIndex: widget.currentPageIndex,
+        items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.gamepad),label: 'Games'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
+        
+        ]);
   }
 }

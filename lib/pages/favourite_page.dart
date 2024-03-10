@@ -22,8 +22,8 @@ class _FavouriteGamesViewState extends State<FavouriteGamesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Favourites')),
-      bottomNavigationBar: NavigationBarSettings(currentPage: currentPage,),
+      appBar: AppBar(title: const Text('Favourites'),automaticallyImplyLeading: false),
+      bottomNavigationBar: BottomNavigationBarSettings(currentPageIndex: 1),
     );
   }
 }
