@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
 
 import 'package:oyun_katalog/models/game_names.dart';
 import 'package:oyun_katalog/pages/favourite_page.dart';
+import 'package:oyun_katalog/pages/game_detail.dart';
 import 'package:oyun_katalog/services/games_api.dart';
 
 class GamePageView extends StatefulWidget {
@@ -48,7 +49,7 @@ class _GamePageViewState extends State<GamePageView> {
         
         
         
-         Padding(padding: const EdgeInsets.all(8),
+        Padding(padding: const EdgeInsets.all(8),
         child: TextField(
           onChanged:(value) => updateList(value),
           decoration: const InputDecoration(
@@ -71,19 +72,7 @@ class _GamePageViewState extends State<GamePageView> {
               final metacriticPoint = game.metacriticScore;
               final backgroundImage = game.backgroundImage;
               final gameGenre = game.gameGenre;
-              return  ListTile(
-                title: Text(gameName),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 32,),
-                    Align(alignment:Alignment.centerLeft, child: Text('metacritic: ${metacriticPoint.toString()}')),
-                    Align(alignment: Alignment.centerLeft,child: Text(gameGenre),)
-                  ],
-                ),
-                leading: Image.network(backgroundImage),
-                
-              );
+              return  GameCard(gameName: gameName, metacriticPoint: metacriticPoint, gameGenre: gameGenre, backgroundImage: backgroundImage, game: game);
           },),
         ),
         
@@ -144,15 +133,17 @@ enum _MyIcons {gamesicon, favouritesicon}
 
 
 class GameCard extends StatelessWidget {
-  
+  Game game;
   String gameName;
-  String metacriticPoint;
+  int metacriticPoint;
   String gameGenre;
-
+  String backgroundImage;
   
   GameCard({super.key,required this.gameName, 
   required this.metacriticPoint,
-  required this.gameGenre});
+  required this.gameGenre,
+  required this.backgroundImage,
+  required this.game});
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +158,14 @@ class GameCard extends StatelessWidget {
           Align(alignment:Alignment.centerLeft, child: Text(metacriticPoint.toString())),
           Align(alignment: Alignment.centerLeft,child: Text(gameGenre),)
         ],
-      )
-                
+      ),
+      leading: Image.network(backgroundImage),
+      onTap: (){
+        Navigator.push(
+          context, 
+          MaterialPageRoute(builder: (context) => GameDetailPage(backgroundImage: backgroundImage, gameName: gameName,game: game))
+        );
+      },          
     );
   }
 }
