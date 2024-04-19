@@ -15,6 +15,7 @@ class GamesApi {
     final results = json['results'] as List<dynamic>;
     final transformed = results.map((e) {
       return Game(
+        Id: e["id"],
         name: e['name'],
         metacriticScore: e['metacritic'],
         backgroundImage: e['background_image'],
@@ -24,19 +25,14 @@ class GamesApi {
     return transformed;
   }
 
-  static Future<List<Detail>> fetchDetailGames() async {
-    const url =
-        'https://api.rawg.io/api/games/3498?key=3be8af6ebf124ffe81d90f514e59856c';
+  static Future<Map<String, dynamic>> fetchDetailGames(int currentId) async {
+    String url =
+        'https://api.rawg.io/api/games/$currentId?key=3be8af6ebf124ffe81d90f514e59856c';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
-    final json = jsonDecode(body);
-    final results = json['results'] as List<dynamic>;
-    final transformed = results.map((e) {
-      return Detail(
-        description: e["description"],
-      );
-    }).toList();
-    return transformed;
+    final Map<String, dynamic> json = jsonDecode(body);
+    Detail(description: json["description"]);
+    return json;
   }
 }

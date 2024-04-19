@@ -15,42 +15,47 @@ class FavouriteGamesView extends StatefulWidget {
 }
 
 class _FavouriteGamesViewState extends State<FavouriteGamesView> {
-  
   final int currentPage = 1;
-  
-  
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    FavoritesProvider favoritesProvider = Provider.of<FavoritesProvider>(context);
+    FavoritesProvider favoritesProvider =
+        Provider.of<FavoritesProvider>(context);
     final games = favoritesProvider.games;
     return Scaffold(
-      appBar: AppBar(title: const Text('Favourites'),automaticallyImplyLeading: false),
+      appBar: AppBar(
+          title: const Text('Favourites'), automaticallyImplyLeading: false),
       bottomNavigationBar: BottomNavigationBarSettings(currentPageIndex: 1),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-        
-        Expanded(
-          child: games.isEmpty ? const Text("No favourites!") :
-          ListView.builder(
-            itemCount: games.length,     
-            itemBuilder: (context, index) {  
-              final game = games[index];
-              final gameName = game.name;  
-              final metacriticPoint = game.metacriticScore;
-              final backgroundImage = game.backgroundImage;
-              final gameGenre = game.gameGenre;
-              return  GameCard(gameName: gameName, metacriticPoint: metacriticPoint, gameGenre: gameGenre, backgroundImage: backgroundImage, game: game);
-          },),
-
-        ),
+          Expanded(
+            child: games.isEmpty
+                ? const Text("No favourites!")
+                : ListView.builder(
+                    itemCount: games.length,
+                    itemBuilder: (context, index) {
+                      final game = games[index];
+                      final gameName = game.name;
+                      final metacriticPoint = game.metacriticScore;
+                      final backgroundImage = game.backgroundImage;
+                      final gameGenre = game.gameGenre;
+                      return GameCard(
+                          gameName: gameName,
+                          metacriticPoint: metacriticPoint,
+                          gameGenre: gameGenre,
+                          backgroundImage: backgroundImage,
+                          game: game);
+                    },
+                  ),
+          ),
         ],
       ),
-    );  
+    );
   }
 }

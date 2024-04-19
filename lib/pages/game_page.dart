@@ -5,7 +5,7 @@ import 'package:oyun_katalog/models/game_details.dart';
 
 import 'package:oyun_katalog/models/game_names.dart';
 import 'package:oyun_katalog/pages/favourite_page.dart';
-import 'package:oyun_katalog/pages/game_detail.dart';
+import 'package:oyun_katalog/pages/game_detail_page.dart';
 import 'package:oyun_katalog/services/games_api.dart';
 
 class GamePageView extends StatefulWidget {
