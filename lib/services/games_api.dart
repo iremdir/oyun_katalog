@@ -32,7 +32,7 @@ class GamesApi {
     final response = await http.get(uri);
     final body = response.body;
     final Map<String, dynamic> json = jsonDecode(body);
-    Detail(description: json["description"]);
+    Detail(description: json["description"], websiteUrl: json["url"]);
     return json;
   }
 }

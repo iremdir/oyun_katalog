@@ -98,25 +98,50 @@ class _GameDetailPageState extends State<GameDetailPage> {
           ),
           Container(
             child: Column(
-              children: [Text("Game Desription"), Text(map["description"])],
+              children: [
+                Text("Game Desription",
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
+                SingleChildScrollView(
+                    child: Expanded(
+                        child: Text(
+                  map["description"],
+                  maxLines: 5,
+                )))
+              ],
             ),
           ),
           Divider(),
           TextButton(
               style: ButtonStyle(alignment: Alignment.centerLeft),
               onPressed: () {
-                _launchURL("http://make-everything-ok.com/");
+                _launchURL(map["url"]);
               },
-              child: Text("Visit reddit")),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Visit reddit",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ))),
           Divider(),
           TextButton(
               style: ButtonStyle(alignment: Alignment.centerLeft),
               onPressed: () {
-                _launchURL("https://www.trashloop.com/");
+                _launchURL(map["url"]);
               },
-              child: Text(
-                "Visit website",
-                style: TextStyle(),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Visit website",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
               ))
         ]),
       ),
